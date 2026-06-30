@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>goodreads — Find your next favorite book, faster.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a140f;
+    --cream:#fbf9f6;
+    --paper:#ffffff;
+    --maroon:#3a2418;
+    --accent:#7a3b2e;
+    --accent-soft:#efe2d6;
+    --pill:#f1ede7;
+    --pill-text:#5b5448;
+    --muted:#6f6a61;
+    --line:#e8e3da;
+    --footer-bg:#1c130d;
+    --footer-text:#c9bfb2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  button{font-family:inherit; cursor:pointer;}
+
+  .wrap{
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 48px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:560px;
+    display:flex;
+    flex-direction:column;
+    color:#fff;
+    overflow:hidden;
+    background:#241712;
+  }
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(120deg, rgba(20,12,8,0.55), rgba(20,12,8,0.62)),
+      url('hero-bg.png');
+    background-size:cover;
+    background-position:center;
+  }
+
+  .nav{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:32px 48px 0;
+    max-width:1280px;
+    margin:0 auto;
+    width:100%;
+  }
+  .logo{
+    font-family:'Source Serif 4', serif;
+    font-size:1.7rem;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .nav-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .btn{
+    border:none;
+    border-radius:8px;
+    padding:11px 22px;
+    font-size:0.92rem;
+    font-weight:600;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-ghost{
+    background:transparent;
+    color:#fff;
+  }
+  .btn-ghost:hover{ opacity:0.8; }
+  .btn-light{
+    background:#fff;
+    color:var(--ink);
+  }
+  .btn-light:hover{ background:#f1ede7; }
+
+  .hero-content{
+    position:relative;
+    z-index:2;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:90px 24px 140px;
+  }
+  .hero-content h1{
+    font-size:clamp(2.1rem, 4.4vw, 3.4rem);
+    line-height:1.12;
+    max-width:780px;
+    color:#fff;
+  }
+  .hero-content p{
+    margin-top:18px;
+    font-size:1.08rem;
+    color:rgba(255,255,255,0.82);
+    max-width:520px;
+  }
+  .search-bar{
+    margin-top:38px;
+    width:100%;
+    max-width:560px;
+    background:#fff;
+    border-radius:12px;
+    padding:16px 22px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.25);
+  }
+  .search-bar svg{ flex-shrink:0; color:#a39c8f; }
+  .search-bar input{
+    border:none;
+    outline:none;
+    font-family:inherit;
+    font-size:0.98rem;
+    width:100%;
+    color:var(--ink);
+    background:transparent;
+  }
+  .search-bar input::placeholder{ color:#a39c8f; }
+
+  .badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#000;
+    color:#fff;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:0.78rem;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .badge .badge-text-top{ display:block; font-size:0.62rem; opacity:0.85; line-height:1; margin-bottom:2px;}
+  .badge .badge-text-bottom{ display:block; font-size:0.92rem; font-weight:600; line-height:1;}
+
+  /* ---------- DISCOVERY HUB ---------- */
+  .hub{
+    padding:84px 0 24px;
+    text-align:center;
+  }
+  .hub h2{
+    font-size:2.1rem;
+    color:var(--ink);
+  }
+  .hub > .wrap > p{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:1.02rem;
+  }
+
+  .toggle-group{
+    display:inline-flex;
+    margin-top:36px;
+    background:var(--pill);
+    border-radius:10px;
+    padding:5px;
+    gap:4px;
+  }
+  .toggle-btn{
+    border:none;
+    background:transparent;
+    padding:10px 22px;
+    border-radius:7px;
+    font-size:0.92rem;
+    font-weight:600;
+    color:var(--pill-text);
+  }
+  .toggle-btn.active{
+    background:#fff;
+    color:var(--ink);
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* ---------- FILTER PILLS ---------- */
+  .filters{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:44px 0 32px;
+  }
+  .pill{
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--pill-text);
+    border-radius:999px;
+    padding:9px 18px;
+    font-size:0.88rem;
+    font-weight:500;
+    white-space:nowrap;
+  }
+  .pill.active{
+    background:var(--maroon);
+    border-color:var(--maroon);
+    color:#fff;
+  }
+  .pill:hover:not(.active){ border-color:#c9c0b0; }
+  .more-genre{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:10px;
+    padding:10px 16px;
+    font-size:0.88rem;
+    font-weight:500;
+    color:var(--ink);
+  }
+
+  /* ---------- BOOK GRID ---------- */
+  .book-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:28px 24px;
+    padding-bottom:90px;
+  }
+  .book-card{ text-align:left; }
+  .cover{
+    position:relative;
+    width:100%;
+    aspect-ratio:3/4;
+    border-radius:6px;
+    overflow:hidden;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.06), 0 8px 18px rgba(20,15,10,0.08);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .book-card:hover .cover{
+    transform:translateY(-4px);
+    box-shadow:0 4px 8px rgba(0,0,0,0.08), 0 16px 28px rgba(20,15,10,0.14);
+  }
+  .cover .cover-title{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    text-align:center;
+    line-height:1.08;
+  }
+  .cover .cover-author{
+    margin-top:10px;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-align:center;
+    opacity:0.85;
+  }
+  .book-title{
+    font-size:0.98rem;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .book-author{
+    margin-top:4px;
+    font-size:0.86rem;
+    color:var(--muted);
+  }
+
+  /* cover palettes */
+  .c1{ background:linear-gradient(160deg,#2b3a3f,#16201f); color:#f2efe6; }
+  .c2{ background:#b3231b; color:#fff; }
+  .c3{ background:linear-gradient(100deg,#a7c4e0,#e8a06b); color:#fff; }
+  .c4{ background:#15110d; color:#e7b75e; border:6px solid #15110d;}
+  .c5{ background:#274028; color:#f4ecd8; }
+  .c6{ background:#f5f2e8; color:#3a5a3a; }
+  .c7{ background:#0f3a2e; color:#e9e3cf; }
+  .c8{ background:linear-gradient(180deg,#cfd8df,#9aa6b0); color:#22282d;}
+  .c9{ background:linear-gradient(180deg,#3a2a35,#1c1620); color:#e8d9c6;}
+  .c10{ background:linear-gradient(160deg,#7c4a2a,#4a2c18); color:#f3e6d2;}
+  .c11{ background:#7a1f1f; color:#f4ece0;}
+  .c12{ background:linear-gradient(160deg,#f6c94a,#e08a1f); color:#1c1c1c;}
+  .c13{ background:linear-gradient(180deg,#2e3b52,#10141f); color:#e7e2d6;}
+  .c14{ background:linear-gradient(135deg,#5e2c8a,#d65fa0 50%,#3aa3c9); color:#fff;}
+  .c15{ background:linear-gradient(160deg,#bcd6e0,#f1e6c8); color:#2e4a3a;}
+  .c16{ background:linear-gradient(160deg,#3a3026,#1a140f); color:#d8c9a8;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--footer-bg);
+    color:var(--footer-text);
+    padding-top:64px;
+  }
+  .footer-top{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr) auto;
+    gap:32px;
+    padding-bottom:56px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .footer-col h4{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    color:#fff;
+    margin-bottom:18px;
+  }
+  .footer-col a{
+    display:block;
+    font-size:0.92rem;
+    color:var(--footer-text);
+    margin-bottom:14px;
+  }
+  .footer-col a:hover{ color:#fff; }
+  .store-col{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-end;
+  }
+  .store-col .badge{ border:1px solid rgba(255,255,255,0.2); }
+
+  .footer-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:24px 0 36px;
+    font-size:0.85rem;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-links{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+  }
+  .footer-links a{ color:var(--footer-text); }
+  .footer-links a:hover{ color:#fff; }
+  .social-icons{
+    display:flex;
+    gap:14px;
+  }
+  .social-icons a{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .social-icons a:hover{ background:rgba(255,255,255,0.16); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 980px){
+    .wrap{ padding:0 28px; }
+    .nav{ padding:24px 28px 0; }
+    .book-grid{ grid-template-columns:repeat(2, 1fr); }
+    .footer-top{ grid-template-columns:repeat(2, 1fr); }
+    .store-col{ grid-column:1/-1; align-items:flex-start; flex-direction:row; }
+  }
+  @media (max-width: 560px){
+    .nav{ padding:20px 20px 0; }
+    .wrap{ padding:0 20px; }
+    .logo{ font-size:1.4rem; }
+    .hero-content{ padding:70px 16px 110px; }
+    .book-grid{ grid-template-columns:repeat(2, 1fr); gap:20px 14px; }
+    .filters{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:20px; }
+    .more-genre{ margin-left:0; }
+    .footer-top{ grid-template-columns:1fr; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+
+  <nav class="nav">
+    <div class="logo">goodreads</div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost">Sign in</button>
+      <button class="btn btn-light">Sign up</button>
+    </div>
+  </nav>
+
+  <div class="hero-content">
+    <h1>Find your next favorite book, faster.</h1>
+    <p>Join 125M readers to track your library, follow friends, and discover books you'll love.</p>
+    <form class="search-bar" role="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" placeholder="Search for a title, author, or genre…">
+    </form>
+  </div>
+
+</header>
+
+<main>
+  <section class="hub">
+    <div class="wrap">
+      <h2>Your discovery hub</h2>
+      <p>Explore the books the world is reading.</p>
+      <div class="toggle-group">
+        <button class="toggle-btn active">Recommended</button>
+        <button class="toggle-btn">Trending now</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="filters">
+      <button class="pill active">All</button>
+      <button class="pill">Business</button>
+      <button class="pill">Fantasy</button>
+      <button class="pill">Fiction</button>
+      <button class="pill">Memoir</button>
+      <button class="pill">Mystery</button>
+      <button class="pill">Non-fiction</button>
+      <button class="pill">Psychology</button>
+      <button class="pill">Romance</button>
+      <button class="pill">Science fiction</button>
+      <button class="pill">Self help</button>
+      <button class="more-genre">More genre
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="book-grid">
+
+      <article class="book-card">
+        <div class="cover c1">
+          <div><div class="cover-title" style="font-size:1.35rem;">IN POWDER BLUE</div><div class="cover-author">Nikolas Pleiadi</div></div>
+        </div>
+        <div class="book-title">In Powder Blue</div>
+        <div class="book-author">By Nikolas Pleiadi</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c2">
+          <div><div class="cover-title" style="font-size:1.6rem;">THE LAST DON</div><div class="cover-author">Mario Puzo</div></div>
+        </div>
+        <div class="book-title">The Last Don</div>
+        <div class="book-author">By Mario Puzo</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c3">
+          <div><div class="cover-title" style="font-size:1.5rem;">Empire of AI</div><div class="cover-author">Karen Hao</div></div>
+        </div>
+        <div class="book-title">Empire of AI: Dreams and Nightmares in Sam Altman's OpenAI</div>
+        <div class="book-author">By Karen Hao</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c4">
+          <div><div class="cover-title" style="font-size:1.4rem;">The Atomic Habits Workbook</div><div class="cover-author">James Clear</div></div>
+        </div>
+        <div class="book-title">The Atomic Habits Workbook</div>
+        <div class="book-author">By James Clear</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c5">
+          <div><div class="cover-title" style="font-size:1.5rem;">Pocket Bear</div><div class="cover-author">Katherine Applegate</div></div>
+        </div>
+        <div class="book-title">Pocket Bear</div>
+        <div class="book-author">By Katherine Applegate</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c6">
+          <div><div class="cover-title" style="font-size:1.2rem;">The Art of Spending Money</div><div class="cover-author">Morgan Housel</div></div>
+        </div>
+        <div class="book-title">The Art of Spending Money: Simple Choices for a Richer Life</div>
+        <div class="book-author">By Morgan Housel</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c7">
+          <div><div class="cover-title" style="font-size:1.4rem;">THE LAST RESORT</div><div class="cover-author">Jasmine Warga</div></div>
+        </div>
+        <div class="book-title">The Claiming</div>
+        <div class="book-author">By Jasmine Warga</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c8">
+          <div><div class="cover-title" style="font-size:1.3rem;">Beyond the Clouds</div><div class="cover-author">Elizabeth Camden</div></div>
+        </div>
+        <div class="book-title">Beyond the Clouds</div>
+        <div class="book-author">By Elizabeth Camden</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c9">
+          <div><div class="cover-title" style="font-size:1.4rem;">Belle of Chatham</div><div class="cover-author">Laura Frantz</div></div>
+        </div>
+        <div class="book-title">The Belle of Chatham</div>
+        <div class="book-author">By Laura Frantz</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c10">
+          <div><div class="cover-title" style="font-size:1.4rem;">THE PERFECT LOAF</div><div class="cover-author">Maurizio Leo</div></div>
+        </div>
+        <div class="book-title">The Perfect Loaf: The Craft and Science of Sourdough Breads, Sweets, and More</div>
+        <div class="book-author">By Maurizio Leo</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c11">
+          <div><div class="cover-title" style="font-size:1.4rem;">Dessert Person</div><div class="cover-author">Claire Saffitz</div></div>
+        </div>
+        <div class="book-title">Dessert Person: Recipes and Guidance for Baking with Confidence</div>
+        <div class="book-author">By Claire Saffitz</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c12">
+          <div><div class="cover-title" style="font-size:1.4rem;">STAR TREK</div><div class="cover-author">Ryan North</div></div>
+        </div>
+        <div class="book-title">Star Trek: Shaxs' Best (and Worst) Day</div>
+        <div class="book-author">By Ryan North</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c13">
+          <div><div class="cover-title" style="font-size:1.4rem;">TWELVE MONTHS</div><div class="cover-author">Jim Butcher</div></div>
+        </div>
+        <div class="book-title">Twelve Months</div>
+        <div class="book-author">By Jim Butcher</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c14">
+          <div><div class="cover-title" style="font-size:1.3rem;">The Elsewhere Express</div><div class="cover-author">Samantha Sotto Yambao</div></div>
+        </div>
+        <div class="book-title">The Elsewhere Express</div>
+        <div class="book-author">By Samantha Sotto Yambao</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c15">
+          <div><div class="cover-title" style="font-size:1.3rem;">The Seven Daughters of Dupree</div><div class="cover-author">Nikesha Elise Williams</div></div>
+        </div>
+        <div class="book-title">The Seven Daughters of Dupree</div>
+        <div class="book-author">By Nikesha Elise Williams</div>
+      </article>
+
+      <article class="book-card">
+        <div class="cover c16">
+          <div><div class="cover-title" style="font-size:1.3rem;">Time Is a Mother</div><div class="cover-author">Ocean Vuong</div></div>
+        </div>
+        <div class="book-title">Time Is a Mother</div>
+        <div class="book-author">By Ocean Vuong</div>
+      </article>
+
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-top">
+    <div class="footer-col">
+      <h4>COMPANY</h4>
+      <a href="#">About us</a>
+      <a href="#">Careers</a>
+      <a href="#">Help</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>DISCOVERY</h4>
+      <a href="#">Choice awards</a>
+      <a href="#">Quotes</a>
+      <a href="#">News &amp; interviews</a>
+      <a href="#">Genres</a>
+    </div>
+    <div class="footer-col">
+      <h4>COMMUNITY</h4>
+      <a href="#">Groups</a>
+      <a href="#">Giveaways</a>
+      <a href="#">Listopia</a>
+      <a href="#">Ask the author</a>
+    </div>
+    <div class="footer-col">
+      <h4>WORK WITH US</h4>
+      <a href="#">Author program</a>
+      <a href="#">Advertise</a>
+      <a href="#">Authors &amp; ads blog</a>
+    </div>
+    <div class="footer-col store-col">
+      <div class="badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 3l11 9-11 9V3z"/></svg>
+        <span><span class="badge-text-top">GET IT ON</span><span class="badge-text-bottom">Google Play</span></span>
+      </div>
+      <div class="badge">
+        <svg width="16" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 1c.1 1-.3 2-1 2.8-.7.8-1.8 1.4-2.8 1.3-.1-1 .4-2.1 1-2.8C14.4 1.4 15.5.9 16.4 1zM20 17.2c-.5 1.2-.8 1.8-1.5 2.8-1 1.4-2.3 3.1-4 3.2-1.5.1-1.9-1-3.9-1s-2.5 1-4 .9c-1.7-.1-3-1.6-3.9-3-2.7-4.1-3-9 .6-11.6 1.6-1.2 3.6-1.3 4.8-.5 1.1.7 2.2.7 3.3 0 1.3-.8 3.5-.9 5-0.1.1 0 .1.1.2.1-.1 0-2.9 1.7-2.6 5-.1 2.8 2 4.2 2 4.2z"/></svg>
+        <span><span class="badge-text-top">Download on the</span><span class="badge-text-bottom">App Store</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap footer-bottom">
+    <span>© 2026 Goodreads LLC</span>
+    <div class="footer-links">
+      <a href="#">Terms of use</a>
+      <a href="#">Privacy policy</a>
+      <a href="#">Interest based Ads</a>
+      <a href="#">Ads preferences</a>
+    </div>
+    <div class="social-icons">
+      <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="#" aria-label="Twitter"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.4.36a9 9 0 0 1-2.83 1.08A4.52 4.52 0 0 0 11.5 5.5c0 .35.04.7.11 1.03A12.8 12.8 0 0 1 1.64 1.15a4.52 4.52 0 0 0 1.4 6.04A4.48 4.48 0 0 1 1 6.6v.06a4.52 4.52 0 0 0 3.63 4.43 4.5 4.5 0 0 1-2.04.08 4.52 4.52 0 0 0 4.22 3.14A9.06 9.06 0 0 1 0 19.54a12.79 12.79 0 0 0 6.92 2.03c8.3 0 12.84-6.88 12.84-12.84 0-.2 0-.39-.01-.58A9.2 9.2 0 0 0 23 3z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V8h4v1.7A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Toggle tabs
+  document.querySelectorAll('.toggle-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  // Filter pills
+  document.querySelectorAll('.pill').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
