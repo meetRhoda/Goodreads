@@ -84,7 +84,7 @@
   .nav-actions{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:10px;
   }
   .btn{
     border:none;
@@ -120,6 +120,7 @@
     font-size:48px;
     font-weight:500;
     line-height:1.12;
+    letter-spacing:-0.03em;
     max-width:780px;
     color:#fff;
   }
@@ -241,12 +242,14 @@
     font-size:0.88rem;
     font-weight:500;
     color:var(--ink);
+    white-space:nowrap;
+    flex-shrink:0;
   }
 
   /* ---------- BOOK GRID ---------- */
   .book-grid{
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(4, minmax(0, 1fr));
     gap:40px 24px;
     padding-bottom:90px;
   }
@@ -394,9 +397,9 @@
   @media (max-width: 980px){
     .wrap{ padding:0 28px; }
     .nav{ padding:24px 28px 0; }
-    .book-grid{ grid-template-columns:repeat(2, 1fr); }
+    .book-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
     .footer-top{ grid-template-columns:repeat(2, 1fr); }
-    .store-col{ grid-column:1/-1; align-items:flex-start; flex-direction:row; margin-top:16px; }
+    .store-col{ grid-column:1/-1; align-items:flex-start; flex-direction:row; margin-top:16px; margin-bottom:16px; }
   }
   @media (max-width: 560px){
     .nav{ padding:20px 20px 0; }
@@ -404,12 +407,12 @@
     .logo{ font-size:1.4rem; }
     .hero-content{ padding:70px 16px 110px; }
     .hero-content p{ white-space:normal; max-width:100%; }
-    .book-grid{ grid-template-columns:repeat(2, 1fr); gap:20px 14px; }
+    .book-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px 14px; }
     .filters{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:20px; }
     .more-genre{ margin-left:0; }
     .footer-top{ grid-template-columns:1fr; }
-    .store-col{ flex-direction:column; align-items:flex-start; margin-top:20px; }
-    .footer-bottom{ flex-direction:column; align-items:flex-start; padding-top:28px; }
+    .store-col{ flex-direction:column; align-items:flex-start; margin-top:20px; margin-bottom:20px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; padding-top:28px; padding-bottom:48px; }
   }
 </style>
 </head>
