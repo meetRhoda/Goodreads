@@ -47,7 +47,7 @@
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
-    min-height:560px;
+    min-height:680px;
     display:flex;
     flex-direction:column;
     color:#fff;
@@ -114,12 +114,12 @@
     flex-direction:column;
     align-items:center;
     text-align:center;
-    padding:90px 80px 140px;
+    padding:170px 80px 140px;
   }
   .hero-content h1{
     font-size:48px;
     font-weight:500;
-    line-height:1.12;
+    line-height:50px;
     letter-spacing:-0.02em;
     max-width:780px;
     color:#fff;
@@ -230,6 +230,24 @@
     color:#fff;
   }
   .pill:hover:not(.active){ border-color:#c9c0b0; }
+  .pill.extra{ display:none; }
+  .filters.expanded .pill.extra{ display:inline-block; }
+  .more-genre svg .v-line{ transition:transform .2s ease, opacity .2s ease; transform-origin:center; }
+  .more-genre.expanded svg .v-line{ transform:scaleY(0); opacity:0; }
+
+  @media (min-width:561px){
+    .filters {
+      position: relative;
+      padding-right: 140px;
+    }
+    .more-genre {
+      position: absolute;
+      right: 0;
+      top: 44px;
+      margin-left: 0;
+    }
+  }
+
   .more-genre{
     margin-left:auto;
     display:flex;
@@ -302,6 +320,10 @@
     font-weight:600;
     color:var(--ink);
     line-height:1.3;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
   .book-author{
     margin-top:4px;
@@ -404,13 +426,12 @@
     .nav{ padding:20px 20px 0; }
     .wrap{ padding:0 20px; }
     .logo{ font-size:1.4rem; }
-    .hero-content{ padding:70px 16px 110px; }
+    .hero-content{ padding:130px 16px 110px; }
     .hero-content p{ white-space:normal; max-width:100%; }
     .book-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px 14px; }
     .filters{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:20px; }
-    .more-genre{ margin-left:0; }
-    .footer-top{ grid-template-columns:1fr; }
-    .store-col{ flex-direction:column; align-items:flex-start; margin-top:20px; margin-bottom:20px; }
+    .more-genre{ margin-left:0; position: static; }
+    .store-col{ margin-top:20px; margin-bottom:20px; flex-wrap:wrap; }
     .footer-bottom{ flex-direction:column; align-items:flex-start; justify-content:flex-start; padding-top:28px; padding-bottom:48px; }
     .footer-links{ row-gap:10px; column-gap:20px; }
   }
@@ -465,8 +486,27 @@
       <button class="pill">Romance</button>
       <button class="pill">Science fiction</button>
       <button class="pill">Self help</button>
-      <button class="more-genre">More genre
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <button class="pill extra">Art</button>
+      <button class="pill extra">Biography</button>
+      <button class="pill extra">Children's</button>
+      <button class="pill extra">Christian</button>
+      <button class="pill extra">Classics</button>
+      <button class="pill extra">Comics</button>
+      <button class="pill extra">Cookbooks</button>
+      <button class="pill extra">Ebooks</button>
+      <button class="pill extra">Graphic Novels</button>
+      <button class="pill extra">Historical Fiction</button>
+      <button class="pill extra">History</button>
+      <button class="pill extra">Horror</button>
+      <button class="pill extra">Music</button>
+      <button class="pill extra">Poetry</button>
+      <button class="pill extra">Science</button>
+      <button class="pill extra">Sports</button>
+      <button class="pill extra">Thriller</button>
+      <button class="pill extra">Travel</button>
+      <button class="pill extra">Young Adult</button>
+      <button class="more-genre" onclick="this.classList.toggle('expanded'); this.closest('.filters').classList.toggle('expanded');">More genre
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19" class="v-line"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
       </button>
     </div>
 
