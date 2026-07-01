@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>goodreads — Find your next favorite book, faster.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1a140f;
-    --cream:#fbf9f6;
+    --cream:#ffffff;
     --paper:#ffffff;
     --maroon:#3a2418;
     --accent:#7a3b2e;
@@ -24,13 +24,13 @@
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
-    font-family:'Inter', sans-serif;
+    font-family:'Lato', sans-serif;
     color:var(--ink);
     background:var(--cream);
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3{
-    font-family:'Source Serif 4', serif;
+    font-family:'Lato', sans-serif;
     font-weight:600;
     letter-spacing:-0.01em;
   }
@@ -41,7 +41,7 @@
   .wrap{
     max-width:1280px;
     margin:0 auto;
-    padding:0 48px;
+    padding:0 80px;
   }
 
   /* ---------- HERO ---------- */
@@ -70,7 +70,7 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:32px 48px 0;
+    padding:32px 80px 0;
     max-width:1280px;
     margin:0 auto;
     width:100%;
@@ -117,16 +117,16 @@
     padding:90px 24px 140px;
   }
   .hero-content h1{
-    font-size:clamp(1.7rem, 3.6vw, 2.8rem);
+    font-size:clamp(2.1rem, 4.4vw, 3.4rem);
     line-height:1.12;
     max-width:780px;
     color:#fff;
   }
   .hero-content p{
     margin-top:18px;
-    font-size:0.95rem;
-    color:rgba(255,255,255,0.82);
-    max-width:520px;
+    font-size:1.08rem;
+    color:#fff;
+    white-space:nowrap;
   }
   .search-bar{
     margin-top:38px;
@@ -184,7 +184,7 @@
   .toggle-group{
     display:inline-flex;
     margin-top:36px;
-    background:var(--pill);
+    background:#EDEFFA;
     border-radius:10px;
     padding:5px;
     gap:4px;
@@ -195,7 +195,7 @@
     padding:10px 22px;
     border-radius:7px;
     font-size:0.92rem;
-    font-weight:600;
+    font-weight:500;
     color:var(--pill-text);
   }
   .toggle-btn.active{
@@ -213,12 +213,12 @@
     padding:44px 0 32px;
   }
   .pill{
-    border:1px solid var(--line);
-    background:#fff;
-    color:var(--pill-text);
-    border-radius:999px;
-    padding:9px 18px;
-    font-size:0.88rem;
+    border:1px solid #E8E8E8;
+    background:#F7F7FA;
+    color:#7C7C7C;
+    border-radius:6px;
+    padding:9px 18px 10px;
+    font-size:13px;
     font-weight:500;
     white-space:nowrap;
   }
@@ -246,7 +246,7 @@
   .book-grid{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
-    gap:28px 24px;
+    gap:40px 24px;
     padding-bottom:90px;
   }
   .book-card{ text-align:left; }
@@ -268,13 +268,25 @@
     transform:translateY(-4px);
     box-shadow:0 4px 8px rgba(0,0,0,0.08), 0 16px 28px rgba(20,15,10,0.14);
   }
+  .cover-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:2;
+  }
   .cover .cover-title{
+    position:relative;
+    z-index:1;
     font-family:'Source Serif 4', serif;
     font-weight:700;
     text-align:center;
     line-height:1.08;
   }
   .cover .cover-author{
+    position:relative;
+    z-index:1;
     margin-top:10px;
     font-size:0.7rem;
     letter-spacing:0.06em;
@@ -326,7 +338,7 @@
     border-bottom:1px solid rgba(255,255,255,0.08);
   }
   .footer-col h4{
-    font-family:'Inter', sans-serif;
+    font-family:'Lato', sans-serif;
     font-size:0.78rem;
     font-weight:700;
     letter-spacing:0.08em;
@@ -382,18 +394,20 @@
     .nav{ padding:24px 28px 0; }
     .book-grid{ grid-template-columns:repeat(2, 1fr); }
     .footer-top{ grid-template-columns:repeat(2, 1fr); }
-    .store-col{ grid-column:1/-1; align-items:flex-start; flex-direction:row; }
+    .store-col{ grid-column:1/-1; align-items:flex-start; flex-direction:row; margin-top:16px; }
   }
   @media (max-width: 560px){
     .nav{ padding:20px 20px 0; }
     .wrap{ padding:0 20px; }
     .logo{ font-size:1.4rem; }
     .hero-content{ padding:70px 16px 110px; }
+    .hero-content p{ white-space:normal; max-width:100%; }
     .book-grid{ grid-template-columns:repeat(2, 1fr); gap:20px 14px; }
     .filters{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:20px; }
     .more-genre{ margin-left:0; }
     .footer-top{ grid-template-columns:1fr; }
-    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+    .store-col{ flex-direction:column; align-items:flex-start; margin-top:20px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; padding-top:28px; }
   }
 </style>
 </head>
@@ -437,9 +451,7 @@
     <div class="filters">
       <button class="pill active">All</button>
       <button class="pill">Business</button>
-      <button class="pill">Fantasy</button>
       <button class="pill">Fiction</button>
-      <button class="pill">Memoir</button>
       <button class="pill">Mystery</button>
       <button class="pill">Non-fiction</button>
       <button class="pill">Psychology</button>
@@ -455,6 +467,7 @@
 
       <article class="book-card">
         <div class="cover c1">
+          <img class="cover-img" src="images/c1.jpg" alt="In Powder Blue cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.35rem;">IN POWDER BLUE</div><div class="cover-author">Nikolas Pleiadi</div></div>
         </div>
         <div class="book-title">In Powder Blue</div>
@@ -463,6 +476,7 @@
 
       <article class="book-card">
         <div class="cover c2">
+          <img class="cover-img" src="images/c2.jpg" alt="The Last Don cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.6rem;">THE LAST DON</div><div class="cover-author">Mario Puzo</div></div>
         </div>
         <div class="book-title">The Last Don</div>
@@ -471,6 +485,7 @@
 
       <article class="book-card">
         <div class="cover c3">
+          <img class="cover-img" src="images/c3.jpg" alt="Empire Of Ai cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.5rem;">Empire of AI</div><div class="cover-author">Karen Hao</div></div>
         </div>
         <div class="book-title">Empire of AI: Dreams and Nightmares in Sam Altman's OpenAI</div>
@@ -479,6 +494,7 @@
 
       <article class="book-card">
         <div class="cover c4">
+          <img class="cover-img" src="images/c4.jpg" alt="The Atomic Habits Workbook cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">The Atomic Habits Workbook</div><div class="cover-author">James Clear</div></div>
         </div>
         <div class="book-title">The Atomic Habits Workbook</div>
@@ -487,6 +503,7 @@
 
       <article class="book-card">
         <div class="cover c5">
+          <img class="cover-img" src="images/c5.jpg" alt="Pocket Bear cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.5rem;">Pocket Bear</div><div class="cover-author">Katherine Applegate</div></div>
         </div>
         <div class="book-title">Pocket Bear</div>
@@ -495,6 +512,7 @@
 
       <article class="book-card">
         <div class="cover c6">
+          <img class="cover-img" src="images/c6.jpg" alt="The Art Of Spending Money cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.2rem;">The Art of Spending Money</div><div class="cover-author">Morgan Housel</div></div>
         </div>
         <div class="book-title">The Art of Spending Money: Simple Choices for a Richer Life</div>
@@ -503,6 +521,7 @@
 
       <article class="book-card">
         <div class="cover c7">
+          <img class="cover-img" src="images/c7.jpg" alt="The Last Resort cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">THE LAST RESORT</div><div class="cover-author">Jasmine Warga</div></div>
         </div>
         <div class="book-title">The Claiming</div>
@@ -511,6 +530,7 @@
 
       <article class="book-card">
         <div class="cover c8">
+          <img class="cover-img" src="images/c8.jpg" alt="Beyond The Clouds cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.3rem;">Beyond the Clouds</div><div class="cover-author">Elizabeth Camden</div></div>
         </div>
         <div class="book-title">Beyond the Clouds</div>
@@ -519,6 +539,7 @@
 
       <article class="book-card">
         <div class="cover c9">
+          <img class="cover-img" src="images/c9.jpg" alt="Belle Of Chatham cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">Belle of Chatham</div><div class="cover-author">Laura Frantz</div></div>
         </div>
         <div class="book-title">The Belle of Chatham</div>
@@ -527,6 +548,7 @@
 
       <article class="book-card">
         <div class="cover c10">
+          <img class="cover-img" src="images/c10.jpg" alt="The Perfect Loaf cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">THE PERFECT LOAF</div><div class="cover-author">Maurizio Leo</div></div>
         </div>
         <div class="book-title">The Perfect Loaf: The Craft and Science of Sourdough Breads, Sweets, and More</div>
@@ -535,6 +557,7 @@
 
       <article class="book-card">
         <div class="cover c11">
+          <img class="cover-img" src="images/c11.jpg" alt="Dessert Person cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">Dessert Person</div><div class="cover-author">Claire Saffitz</div></div>
         </div>
         <div class="book-title">Dessert Person: Recipes and Guidance for Baking with Confidence</div>
@@ -543,6 +566,7 @@
 
       <article class="book-card">
         <div class="cover c12">
+          <img class="cover-img" src="images/c12.jpg" alt="Star Trek cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">STAR TREK</div><div class="cover-author">Ryan North</div></div>
         </div>
         <div class="book-title">Star Trek: Shaxs' Best (and Worst) Day</div>
@@ -551,6 +575,7 @@
 
       <article class="book-card">
         <div class="cover c13">
+          <img class="cover-img" src="images/c13.jpg" alt="Twelve Months cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.4rem;">TWELVE MONTHS</div><div class="cover-author">Jim Butcher</div></div>
         </div>
         <div class="book-title">Twelve Months</div>
@@ -559,6 +584,7 @@
 
       <article class="book-card">
         <div class="cover c14">
+          <img class="cover-img" src="images/c14.jpg" alt="The Elsewhere Express cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.3rem;">The Elsewhere Express</div><div class="cover-author">Samantha Sotto Yambao</div></div>
         </div>
         <div class="book-title">The Elsewhere Express</div>
@@ -567,6 +593,7 @@
 
       <article class="book-card">
         <div class="cover c15">
+          <img class="cover-img" src="images/c15.jpg" alt="The Seven Daughters Of Dupree cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.3rem;">The Seven Daughters of Dupree</div><div class="cover-author">Nikesha Elise Williams</div></div>
         </div>
         <div class="book-title">The Seven Daughters of Dupree</div>
@@ -575,6 +602,7 @@
 
       <article class="book-card">
         <div class="cover c16">
+          <img class="cover-img" src="images/c16.jpg" alt="Time Is A Mother cover" onerror="this.style.display='none'">
           <div><div class="cover-title" style="font-size:1.3rem;">Time Is a Mother</div><div class="cover-author">Ocean Vuong</div></div>
         </div>
         <div class="book-title">Time Is a Mother</div>
